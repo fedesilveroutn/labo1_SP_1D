@@ -2,9 +2,9 @@
  ============================================================================
  Name        : SP_Labo1_SilveroFedericoElias.c
  Author      : Federico Elías Silvero
- Version     : Segundo parcial
+ Version     : 1
  Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
+ Description : Segundo parcial Laboratorio 1
  ============================================================================
  */
 
@@ -13,6 +13,9 @@
 
 int main(void) {
 	setbuf(stdout, NULL);
+
+
+
 
 
 	return 0;
