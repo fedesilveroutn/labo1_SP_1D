@@ -125,3 +125,66 @@ int perro_parser(FILE* pFile , LinkedList* pListaPerritos)
 
 	return ret;
 }
+
+
+int perro_load(char* path , LinkedList* pListaPerros)
+{
+	FILE* pFile;
+	int ret = 1;
+
+	if( path != NULL && pListaPerros != NULL)
+	{
+		pFile = fopen (path, "r");
+		if(pFile != NULL)
+		{
+			perro_parser(pFile, pListaPerros);
+			ret = 0;
+		}
+	}
+
+	fclose(pFile);
+	return ret;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+int perro_listar(LinkedList* pListaPerros)
+{
+	ePerro* auxPerro;
+	int ret = 1;
+	int len;
+	int i;
+
+	if (pListaPerros != NULL)
+	{
+		len = ll_len(pListaPerros);
+		printf("\n%-5s %-16s %-10s %-10s %-10s\n", "ID", "NOMBRE", "PESO", "EDAD", "RAZA");
+		for (i = 0; i < len + 1; i++ )
+		{
+			auxPerro = (ePerro*) ll_get(pListaPerros, i);
+			printf("\n%-5d %-16s %-10.2f %-10d %-10s", auxPerro->id, auxPerro->nombre, auxPerro->peso, auxPerro->edad, auxPerro->raza );
+		}
+		ret = 0;
+	}
+
+    return ret;
+}
+
+
+
+
+
+
+
+
+
+

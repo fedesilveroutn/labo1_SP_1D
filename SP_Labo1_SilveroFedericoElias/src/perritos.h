@@ -28,10 +28,15 @@ int perro_setPeso (ePerro* this, char* peso);
 int perro_setEdad (ePerro* this, char* edad);
 int perro_setRaza(ePerro* this, char* raza);
 
-
-
-
+//PARSER
 int perro_parser(FILE* pFile , LinkedList* pListaPerritos);
+
+//LEER Y GUARDAR EN LINKEDLIST
+int perro_load(char* path , LinkedList* pListaPerros);
+
+
+//LISTAR PERROS
+int perro_listar(LinkedList* pListaPerros);
 
 
 #endif /* PERRITOS_H_ */
