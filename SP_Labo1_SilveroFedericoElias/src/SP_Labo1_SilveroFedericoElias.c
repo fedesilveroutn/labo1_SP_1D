@@ -37,6 +37,11 @@ int main(void) {
 	perro_listarConRacion(pListaPerros);
 
 
+	//PARA FILTRAR
+	pFunction = perro_laQueFiltra;
+	ll_filter(pListaPerros, pFunction);
+
+
 
 
 	return 0;

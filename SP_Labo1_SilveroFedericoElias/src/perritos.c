@@ -253,9 +253,32 @@ int perro_load(char* path , LinkedList* pListaPerros)
 }
 
 
+
+int perro_sortByName (void* pointer1 , void* pointer2)
+{
+	ePerro* aux1 = (ePerro*) pointer1;
+	ePerro* aux2 = (ePerro*) pointer2;
+	char auxName1[128];
+	char auxName2[128];
+	int ret;
+
+	if(pointer1 != NULL && pointer2 != NULL)
+	{
+		employee_getNombre(aux1, auxName1);
+		employee_getNombre(aux2, auxName2);
+		ret = strcmp(auxName1 , auxName2);
+	}
+	aux1 = NULL;
+	aux2 = NULL;
+	return ret;
+}
+
+
+
 int perro_listar(LinkedList* pListaPerros)
 {
 	ePerro* auxPerro;
+	ePerro* auxPerro2;
 	int ret = 1;
 	int len;
 	int i;
@@ -268,6 +291,9 @@ int perro_listar(LinkedList* pListaPerros)
 	int retRaza;
 	char auxRaza[21];
 
+	int pFunction (void*  , void* );
+	pFunction = perro_sortByName;
+
 	if (pListaPerros != NULL)
 	{
 		len = ll_len(pListaPerros);
@@ -275,6 +301,8 @@ int perro_listar(LinkedList* pListaPerros)
 		for (i = 0; i < len + 1; i++ )
 		{
 			auxPerro = (ePerro*) ll_get(pListaPerros, i);
+			auxPerro = (ePerro*) ll_get(pListaPerros, i + 1);
+			ll_sort(pListaPerros, pFunction(auxPerro, auxPerro2), 1);
 
 			auxId = perro_getId(auxPerro);
 			retNombre = perro_getNombre(auxPerro, auxNombre);
@@ -355,6 +383,44 @@ int perro_listarConRacion(LinkedList* pListaPerros)
 
     return ret;
 }
+
+
+
+
+int perro_laQueFiltra(void* this)
+{
+	ePerro* auxPerro;
+	int ret = -1;
+
+	int retRaza;
+	char auxRaza[21];
+	int auxEdad;
+	float auxCantidadComida;
+
+	if(this != NULL)
+	{
+		auxPerro = this;
+
+		retRaza = perro_getRaza(auxPerro, auxRaza);
+		auxEdad = perro_getEdad(auxPerro);
+		auxCantidadComida = perro_getRacion(auxPerro);
+
+		if(strcmp(auxRaza , "Galgo") == 0  && auxEdad > 10 && auxCantidadComida < 200)
+		{
+			ret = 0;
+		}
+	}
+
+	return ret;
+}
+
+
+
+
+
+
+
+
 
 
 

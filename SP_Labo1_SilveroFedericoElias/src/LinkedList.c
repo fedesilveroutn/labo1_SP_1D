@@ -629,6 +629,30 @@ int ll_map(LinkedList* this, int (*pFunc)(void*) )
 
 
 
+LinkedList* ll_filter(LinkedList* this, int (*pFunc)(void*))
+{
+	LinkedList* listaFiltrada = ll_newLinkedList();
+	Node* auxElement;
+	int retFunction;
+	int len;
+	int i;
+
+	if(this != NULL && pFunc != NULL)
+	{
+		len = ll_len(this);
+		for( i = 0; i < len; i++)
+		{
+			retFunction = pFunc(auxElement);
+			if( retFunction == 0)
+			{
+				auxElement = getNode(this, i);
+				ll_add(listaFiltrada, auxElement, i);
+			}
+		}
+	}
+
+	return listaFiltrada;
+}
 
 
 
