@@ -28,7 +28,7 @@ LinkedList* ll_newLinkedList(void);
 int ll_len(LinkedList* this);
 Node* test_getNode(LinkedList* this, int nodeIndex);
 int test_addNode(LinkedList* this, int nodeIndex,void* pElement);
-int ll_add(LinkedList* this, void* pElement, int nodeIndex);
+int ll_add(LinkedList* this, void* pElement);
 void* ll_get(LinkedList* this, int index);
 int ll_set(LinkedList* this, int index,void* pElement);
 int ll_remove(LinkedList* this,int index);

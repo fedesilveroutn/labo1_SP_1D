@@ -110,6 +110,7 @@ static int addNode(LinkedList* this, int nodeIndex, void* pElement)
 	{
 		auxNode = (Node*) malloc (sizeof(Node));//guardo espacio en memoria dinamica para un aux de la estructura Node
 		auxNode->pElement = pElement;//le asigno el puntero a la estructura que quiero agregar
+
 		if (nodeIndex == 0)//para agregar el nodo en la primera posicion de la linkedlist
 		{
 			auxNode->pNextNode = this->pFirstNode;//para que el anterior primer nodo no se pierda, debo guardarlos en el puntero al sig nodo de mi aux
@@ -158,7 +159,7 @@ int test_addNode(LinkedList* this, int nodeIndex,void* pElement)
                         ( 0) Si funciono correctamente
  *
  */
-int ll_add(LinkedList* this, void* pElement, int nodeIndex)
+int ll_add(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
     int len;
@@ -166,10 +167,7 @@ int ll_add(LinkedList* this, void* pElement, int nodeIndex)
     if( this != NULL && pElement != NULL)
     {
     	len = ll_len(this);
-    	if( nodeIndex < len + 1)
-    	{
-    		addNode(this, nodeIndex, pElement);
-    	}
+    	addNode(this, len, pElement);
     	returnAux = 0;
     }
 
@@ -631,27 +629,23 @@ int ll_map(LinkedList* this, int (*pFunc)(void*) )
 
 LinkedList* ll_filter(LinkedList* this, int (*pFunc)(void*))
 {
-	LinkedList* listaFiltrada = ll_newLinkedList();
-	Node* auxElement;
-	int retFunction;
-	int len;
+	LinkedList* nuevaLista = ll_newLinkedList();
+	ePerro* elemento;
+
+	int len = ll_len(this);;
 	int i;
 
-	if(this != NULL && pFunc != NULL)
+	for( i = 0; i < len ; i++)
 	{
-		len = ll_len(this);
-		for( i = 0; i < len; i++)
+		elemento = ll_get(this, i);
+		if ( pFunc (elemento) == 0 )
 		{
-			retFunction = pFunc(auxElement);
-			if( retFunction == 0)
-			{
-				auxElement = getNode(this, i);
-				ll_add(listaFiltrada, auxElement, i);
-			}
+			ll_add(nuevaLista, elemento);
 		}
+
 	}
 
-	return listaFiltrada;
+	return nuevaLista;
 }
 
 

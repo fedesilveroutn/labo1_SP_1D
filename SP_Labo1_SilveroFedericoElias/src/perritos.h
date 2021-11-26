@@ -45,8 +45,6 @@ int perro_parser(FILE* pFile , LinkedList* pListaPerritos);
 //LEER Y GUARDAR EN LINKEDLIST
 int perro_load(char* path , LinkedList* pListaPerros);
 
-//ORDENAR SEGUN NOMBRE
-int perro_sortByName (void* pointer1 , void* pointer2);
 
 //LISTAR PERROS
 int perro_listar(LinkedList* pListaPerros);
@@ -62,6 +60,11 @@ int perro_listarConRacion(LinkedList* pListaPerros);
 
 //FILTRO
 int perro_laQueFiltra(void* this);
+
+
+//GUARDAR TEXTO
+int perro_guardarTexto(char* path, LinkedList* pListaPerros);
+
 
 
 

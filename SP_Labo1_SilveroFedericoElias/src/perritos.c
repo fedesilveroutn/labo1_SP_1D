@@ -208,8 +208,6 @@ int perro_parser(FILE* pFile , LinkedList* pListaPerritos)
 	char auxRaza[21];
 
 	int ret = 1;
-	int i = 0;
-
 
 	if (pFile != NULL && pListaPerritos != NULL)
 	{
@@ -218,12 +216,7 @@ int perro_parser(FILE* pFile , LinkedList* pListaPerritos)
 		{
 			fscanf(pFile, "%[^,], %[^,], %[^,], %[^,], %[^\n]\n", auxId, auxNombre, auxPeso, auxEdad, auxRaza);
 			ePerro* auxPerro = perro_newParam(auxId, auxNombre, auxPeso, auxEdad, auxRaza);
-			/*if ( feof (pFile) )
-			{
-				break;
-			}*/
-			ll_add(pListaPerritos, auxPerro, i);
-			i++;
+			ll_add(pListaPerritos, auxPerro);
 		}
 
 		ret = 0;
@@ -254,18 +247,19 @@ int perro_load(char* path , LinkedList* pListaPerros)
 
 
 
-int perro_sortByName (void* pointer1 , void* pointer2)
+
+int perro_sortByName(void* pointer1 , void* pointer2)
 {
 	ePerro* aux1 = (ePerro*) pointer1;
 	ePerro* aux2 = (ePerro*) pointer2;
-	char auxName1[128];
-	char auxName2[128];
+	char auxName1[21];
+	char auxName2[21];
 	int ret;
 
 	if(pointer1 != NULL && pointer2 != NULL)
 	{
-		employee_getNombre(aux1, auxName1);
-		employee_getNombre(aux2, auxName2);
+		perro_getNombre(aux1, auxName1);
+		perro_getNombre(aux2, auxName2);
 		ret = strcmp(auxName1 , auxName2);
 	}
 	aux1 = NULL;
@@ -278,7 +272,6 @@ int perro_sortByName (void* pointer1 , void* pointer2)
 int perro_listar(LinkedList* pListaPerros)
 {
 	ePerro* auxPerro;
-	ePerro* auxPerro2;
 	int ret = 1;
 	int len;
 	int i;
@@ -291,8 +284,9 @@ int perro_listar(LinkedList* pListaPerros)
 	int retRaza;
 	char auxRaza[21];
 
-	int pFunction (void*  , void* );
-	pFunction = perro_sortByName;
+	int (*pFuncionOrdenarNombre) (void*, void*);
+	pFuncionOrdenarNombre = perro_sortByName;
+	ll_sort(pListaPerros, pFuncionOrdenarNombre, 1);
 
 	if (pListaPerros != NULL)
 	{
@@ -301,8 +295,6 @@ int perro_listar(LinkedList* pListaPerros)
 		for (i = 0; i < len + 1; i++ )
 		{
 			auxPerro = (ePerro*) ll_get(pListaPerros, i);
-			auxPerro = (ePerro*) ll_get(pListaPerros, i + 1);
-			ll_sort(pListaPerros, pFunction(auxPerro, auxPerro2), 1);
 
 			auxId = perro_getId(auxPerro);
 			retNombre = perro_getNombre(auxPerro, auxNombre);
@@ -358,6 +350,10 @@ int perro_listarConRacion(LinkedList* pListaPerros)
 	char auxRaza[21];
 	float auxRacion;
 
+	int (*pFuncionOrdenarNombre) (void*, void*);
+	pFuncionOrdenarNombre = perro_sortByName;
+	ll_sort(pListaPerros, pFuncionOrdenarNombre, 1);
+
 	if (pListaPerros != NULL)
 	{
 		len = ll_len(pListaPerros);
@@ -392,20 +388,19 @@ int perro_laQueFiltra(void* this)
 	ePerro* auxPerro;
 	int ret = -1;
 
-	int retRaza;
 	char auxRaza[21];
 	int auxEdad;
 	float auxCantidadComida;
 
 	if(this != NULL)
 	{
-		auxPerro = this;
+		auxPerro = (ePerro*) this;
 
-		retRaza = perro_getRaza(auxPerro, auxRaza);
+		perro_getRaza(auxPerro, auxRaza);
 		auxEdad = perro_getEdad(auxPerro);
 		auxCantidadComida = perro_getRacion(auxPerro);
 
-		if(strcmp(auxRaza , "Galgo") == 0  && auxEdad > 10 && auxCantidadComida < 200)
+		if(strcmp(auxRaza , "Galgo") == 0  && auxEdad > 10 && auxCantidadComida < 200 )
 		{
 			ret = 0;
 		}
@@ -416,7 +411,56 @@ int perro_laQueFiltra(void* this)
 
 
 
+int perro_guardarTexto(char* path, LinkedList* pListaPerros)
+{
+	FILE* pFile;
+	int ret = 1;
+	int len;
 
+	int auxId;
+	char auxNombre[21];
+	float auxPeso;
+	int auxEdad;
+	char auxRaza[21];
+	float auxCantidadComidaRacion;
+
+
+
+	if( path != NULL && pListaPerros != NULL)
+	{
+		pFile = fopen(path, "w");
+		len = ll_len(pListaPerros);
+		if(pFile != NULL)
+		{
+			fprintf(pFile,"%s\n", "id,nombre,peso,edad,raza,racion");
+
+			for(int i = 0; i < len ; i++)
+			{
+				ePerro* auxPerro = ll_get(pListaPerros, i);
+				auxId = perro_getId(auxPerro);
+				perro_getNombre(auxPerro, auxNombre);
+				auxPeso = perro_getPeso(auxPerro);
+				auxEdad = perro_getEdad(auxPerro);
+				perro_getRaza(auxPerro, auxRaza);
+				auxCantidadComidaRacion = perro_getRacion(auxPerro);
+
+				fprintf(pFile, "%d,", auxId);
+				fprintf(pFile, "%s,", auxNombre);
+				fprintf(pFile, "%f,", auxPeso);
+				fprintf(pFile, "%d,", auxEdad);
+				fprintf(pFile, "%s,", auxRaza);
+				fprintf(pFile, "%f\n", auxCantidadComidaRacion);
+			}
+
+			ret = 0;
+		}
+
+		fclose(pFile);
+		pFile = NULL;
+	}
+
+	return ret;
+}
 
 
 

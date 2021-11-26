@@ -13,19 +13,24 @@
 #include <string.h>
 #include "perritos.h"
 #include "LinkedList.h"
+#include "input.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
 
 	LinkedList* pListaPerros = ll_newLinkedList();
+	LinkedList* pListaFiltrada = ll_newLinkedList();
 	int (*pFunction)(void*);
+	int (*pFilterFunction)(void*);
 
 	//PARA LEER Y GUARDAR DINAMICAMENTE EN LINKEDLIST
 	perro_load("src\\perritos.csv", pListaPerros);
 
 
 	//PARA LISTAR
+	printf("\nORDENANDO PERROS...");
 	perro_listar(pListaPerros);
+	systemPause("\nPresione ENTER para continuar...");
 
 
 	//PARA CALCULAR RACION
@@ -34,14 +39,21 @@ int main(void) {
 
 
 	//PARA LISTAR CON RACION
+	printf("\nCALCULANDO RACION DE COMIDA...");
 	perro_listarConRacion(pListaPerros);
+	systemPause("\nPresione ENTER para continuar...");
 
 
 	//PARA FILTRAR
-	pFunction = perro_laQueFiltra;
-	ll_filter(pListaPerros, pFunction);
+	pFilterFunction = perro_laQueFiltra;
+	pListaFiltrada = ll_filter(pListaPerros, pFilterFunction);
+	perro_listarConRacion(pListaFiltrada);
 
 
+	//PARA GUARDAR EN MODO TEXTO
+	perro_guardarTexto("src\\galgosFlaquitos.csv", pListaFiltrada);
+
+	printf("\nFIN DEL PROGRAMA.");
 
 
 	return 0;
