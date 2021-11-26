@@ -13,6 +13,7 @@ typedef struct
 	float peso;
 	int edad;
 	char raza[21];
+	float cantidadComidaRacion;
 
 }ePerro;
 
@@ -27,6 +28,7 @@ int perro_setNombre(ePerro* this, char* nombre);
 int perro_setPeso (ePerro* this, char* peso);
 int perro_setEdad (ePerro* this, char* edad);
 int perro_setRaza(ePerro* this, char* raza);
+int perro_setCantidadComida (ePerro* this, float racion);
 
 //GETTER
 int perro_getId(ePerro* this);
@@ -34,6 +36,7 @@ float perro_getPeso(ePerro* this);
 int perro_getNombre(ePerro* this, char* nombre);
 int perro_getEdad(ePerro* this);
 int perro_getRaza(ePerro* this, char* raza);
+float perro_getRacion(ePerro* this);
 
 
 //PARSER
@@ -45,6 +48,14 @@ int perro_load(char* path , LinkedList* pListaPerros);
 
 //LISTAR PERROS
 int perro_listar(LinkedList* pListaPerros);
+
+
+//CALCULAR RACION
+int perro_laQueMapea (void* this);
+
+
+//LISTAR CON RACION
+int perro_listarConRacion(LinkedList* pListaPerros);
 
 
 #endif /* PERRITOS_H_ */
