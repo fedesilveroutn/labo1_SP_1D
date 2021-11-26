@@ -28,6 +28,14 @@ int perro_setPeso (ePerro* this, char* peso);
 int perro_setEdad (ePerro* this, char* edad);
 int perro_setRaza(ePerro* this, char* raza);
 
+//GETTER
+int perro_getId(ePerro* this);
+float perro_getPeso(ePerro* this);
+int perro_getNombre(ePerro* this, char* nombre);
+int perro_getEdad(ePerro* this);
+int perro_getRaza(ePerro* this, char* raza);
+
+
 //PARSER
 int perro_parser(FILE* pFile , LinkedList* pListaPerritos);
 

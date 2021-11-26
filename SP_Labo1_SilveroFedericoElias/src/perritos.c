@@ -17,6 +17,7 @@ ePerro* perro_newParam(char* id, char* nombre, char* peso, char* edad, char* raz
 	{
 		perro_setId(new, id);
 		perro_setNombre(new, nombre);
+		perro_setPeso(new, peso);
 		perro_setRaza(new, raza);
 		perro_setEdad(new, edad);
 	}
@@ -86,6 +87,93 @@ int perro_setRaza(ePerro* this, char* raza)
 	}
 	return ret;
 }
+
+int perro_getId(ePerro* this)
+{
+	int id = -1;
+
+	if(this != NULL)
+	{
+		id = this->id;
+	}
+
+	return id;
+}
+
+int perro_getNombre(ePerro* this, char* nombre)
+{
+	int ret = -1;
+
+	if(this != NULL && nombre != NULL)
+	{
+		strcpy(nombre, this->nombre);
+		ret = 0;
+	}
+
+	return ret;
+}
+
+
+float perro_getPeso(ePerro* this)
+{
+	float peso = -1;
+	if(this != NULL)
+	{
+		peso = this->peso;
+	}
+
+	return peso;
+}
+
+
+
+
+
+int perro_getEdad(ePerro* this)
+{
+	int edad = -1;
+	if(this != NULL)
+	{
+		edad = this->edad;
+	}
+
+	return edad;
+}
+
+
+
+
+
+int perro_getRaza(ePerro* this, char* raza)
+{
+	int ret = -1;
+
+	if(this != NULL && raza != NULL)
+	{
+		strcpy(raza, this->raza);
+		ret = 0;
+	}
+
+	return ret;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -164,6 +252,14 @@ int perro_listar(LinkedList* pListaPerros)
 	int len;
 	int i;
 
+	int auxId;
+	int retNombre;
+	char auxNombre[21];
+	float auxPeso;
+	int auxEdad;
+	int retRaza;
+	char auxRaza[21];
+
 	if (pListaPerros != NULL)
 	{
 		len = ll_len(pListaPerros);
@@ -171,7 +267,17 @@ int perro_listar(LinkedList* pListaPerros)
 		for (i = 0; i < len + 1; i++ )
 		{
 			auxPerro = (ePerro*) ll_get(pListaPerros, i);
-			printf("\n%-5d %-16s %-10.2f %-10d %-10s", auxPerro->id, auxPerro->nombre, auxPerro->peso, auxPerro->edad, auxPerro->raza );
+
+			auxId = perro_getId(auxPerro);
+			retNombre = perro_getNombre(auxPerro, auxNombre);
+			auxPeso = perro_getPeso(auxPerro);
+			auxEdad = perro_getEdad(auxPerro);
+			retRaza = perro_getRaza(auxPerro, auxRaza);
+
+			if(auxId != -1 && retNombre != -1 && auxPeso != -1 && auxEdad != -1 && retRaza != -1)
+			{
+				printf("\n%-5d %-16s %-10.2f %-10d %-10s", auxId, auxNombre, auxPeso, auxEdad, auxRaza );
+			}
 		}
 		ret = 0;
 	}
